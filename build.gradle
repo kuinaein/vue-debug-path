@@ -22,6 +22,9 @@ repositories {
 	mavenCentral()
 }
 
+sourceSets.main.resources {
+	srcDirs = ['src/main/resources', 'vue-debug-path-front/dist']
+}
 
 dependencies {
 	compile('org.springframework.boot:spring-boot-starter-thymeleaf')

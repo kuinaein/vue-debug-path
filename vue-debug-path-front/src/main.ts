@@ -1,12 +1,17 @@
 import Vue from 'vue'
-import App from './App'
 import router from './router'
 
 Vue.config.productionTip = false
 
-/* eslint-disable no-new */
-new Vue({
-  el: '#app',
-  router,
-  render: h => h(App)
-})
+export let instance: Vue | undefined;
+
+export function init(appClass: typeof Vue) {
+  /* eslint-disable no-new */
+  instance = new appClass({
+    el: '#app',
+    router
+  });
+}
+
+export { default as App } from './App';
+export { default as App2 } from './App2';
