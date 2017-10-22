@@ -1,17 +1,20 @@
-import Vue from 'vue'
-import router from './router'
+import Vue from 'vue';
+import PathResolver from '@/debug-router/PathResolver';
+import DebugRouterFrame from '@/debug-router/DebugRouterFrame.vue';
 
-Vue.config.productionTip = false
-
+// Vue.config.productionTip = false;
 export let instance: Vue | undefined;
 
-export function init(appClass: typeof Vue) {
-  /* eslint-disable no-new */
-  instance = new appClass({
+export function init(contextPath: string, appClass: typeof Vue, someParam: any) {
+  Vue.use(PathResolver, { contextPath });
+
+  const actualAppClass = 'production' === process.env.NODE_ENV ?
+      appClass : DebugRouterFrame;
+  instance = new actualAppClass({
     el: '#app',
-    router
+    propsData: { someParam },
   });
 }
 
-export { default as App } from './App';
-export { default as App2 } from './App2';
+export { default as App } from './App.vue';
+export { default as App2 } from './App2.vue';

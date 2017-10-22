@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <title>vue-debug-path-front</title>
+    <%
+      // refs: https://www.npmjs.com/package/webpack-subresource-integrity
+      for (const chunkName in htmlWebpackPlugin.files.chunks) {
+        const chunk = htmlWebpackPlugin.files.chunks[chunkName];
+        for (const f in chunk.css) {
+          const css = htmlWebpackPlugin.files.css[f];
+    %>
+      <link rel="stylesheet" href="<%= css %>"
+          th:href="@{'<%= css %>'}" />
+    <% } } %>
+  </head>
+  <body>
+    <div id="app"></div>
+    <%
+      for (const chunkName in htmlWebpackPlugin.files.chunks) {
+        const js = htmlWebpackPlugin.files.chunks[chunkName].entry;
+    %>
+      <script src="<%= js %>"
+          th:src="@{'<%= js %>'}" ></script>
+    <% } %>
+    <script th:inline="javascript">/*<![CDATA[*/
+      var contextPath = /*[[@{'/'}]]*/ '/ctx';
+      var appClassName = /*[[<%='$'%>{appClass}]]*/ 'App';
+      var someParam = /*[[<%='$'%>{someParam}]]*/ 'foobar';
+      theApp.init(contextPath, theApp[appClassName], someParam);
+    /*]]>*/</script>
+  </body>
+</html>
